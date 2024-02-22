@@ -1,15 +1,18 @@
 import { fetchTransactionsPages } from '@/app/lib/data';
 import Link from 'next/link';
 
-export default async function InvoicesTable({
-  query,
-  currentPage,
+export default async function TradingHistoryTable({
+  accountid,
 }: {
-  query: string;
-  currentPage: number;
+    accountid: string;
 }) {
-  const transactions = await fetchTransactionsPages();
-  const filteredTransactions = transactions.filter(transaction => transaction.stock_name.toLowerCase().includes(query.toLowerCase()));
+    const historys = [
+        { orderid: 'orderid1', symbol: 'symbol1', createddate: '2020/10/10', closedate: '2020/10/12', price: 35, qty: 12, status: 'open' },
+        { orderid: 'orderid2', symbol: 'symbol2', createddate: '2020/10/10', closedate: '2020/10/12', price: 35, qty: 12, status: 'close' },
+        { orderid: 'orderid3', symbol: 'symbol3', createddate: '2020/10/10', closedate: '2020/10/12', price: 35, qty: 12, status: 'open' },
+        { orderid: 'orderid4', symbol: 'symbol4', createddate: '2020/10/10', closedate: '2020/10/12', price: 35, qty: 12, status: 'close' },
+        { orderid: 'orderid5', symbol: 'symbol5', createddate: '2020/10/10', closedate: '2020/10/12', price: 35, qty: 12, status: 'open' }
+    ]
 
   return (
     <div className="mt-6 flow-root">
@@ -19,48 +22,59 @@ export default async function InvoicesTable({
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Stock Name
+                  Order ID
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Stock Symbol
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Total Minting Amount of Tokens
+                  Stock Created Date
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Total Amount of Tokens Destroyed
+                  Stock Close Date
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Current Circulation of Tokens
+                  Price
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Quantity
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Status
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {filteredTransactions?.map((transaction) => (
+              {historys?.map((history) => (
                 <tr
-                  key={transaction.stock_symbol}
+                  key={history.orderid}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
-                  <Link href={`transaction/detail/${transaction.stock_symbol}`}>
-                    <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex items-center gap-3">
-                        <p>{transaction.stock_name}</p>
+                      <p>{history.orderid}</p>
                       </div>
-                    </td>
-                  </Link>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {transaction.stock_symbol}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {transaction.total_minting_amount_of_tokens}
+                    {history.symbol}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {transaction.total_amount_of_tokens_destroyed}
+                    {history.createddate}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {transaction.current_circulation_of_tokens}
+                    {history.closedate}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {history.price}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {history.qty}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {history.status}
                   </td>
                 </tr>
+                
               ))}
             </tbody>
           </table>
